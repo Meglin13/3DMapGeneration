@@ -38,6 +38,10 @@ public class ChunkScript : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Метод установки координат и загрузки состояния, если 
+    /// </summary>
+    /// <param name="coords">Координаты чанка</param>
     public void SetCoordinates(Vector2Int coords)
     {
         var state = states.FirstOrDefault(x => x.Coords == coords);
@@ -53,6 +57,11 @@ public class ChunkScript : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Метод установки стен в следующем порядке: север, восток, юг, запад
+    /// </summary>
+    /// <param name="states">Массив булевых значение</param>
     public void SetWalls(bool[] states)
     {
         for (int i = 0; i < 4; ++i)
@@ -68,6 +77,11 @@ public class ChunkScript : MonoBehaviour
         SaveState();
     }
 
+
+    /// <summary>
+    /// Метода установки случайного состояния потомков контейнера
+    /// </summary>
+    /// <param name="container">Контейнер</param>
     private void SetRandomActiveChild(Transform container)
     {
         foreach (Transform item in container)
@@ -78,6 +92,11 @@ public class ChunkScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Метод установки состояния потомков контейнера в соответствии с массивом булевых значений
+    /// </summary>
+    /// <param name="activeList">Массив булевых значений</param>
+    /// <param name="container">Контейнер</param>
     private void SetActiveChild(List<bool> activeList, Transform container)
     {
         for (int i = 0; i < activeList.Count; i++)
@@ -86,6 +105,10 @@ public class ChunkScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Сохранение состояния чанка. 
+    /// Сохраняются координаты, состояние игровых объектов в контейнерах декора и препятствий
+    /// </summary>
     private void SaveState()
     {
         var decor = DecorContainer.transform.Cast<Transform>().Select(t => t.gameObject.activeInHierarchy).ToList();
@@ -101,6 +124,10 @@ public class ChunkScript : MonoBehaviour
         states.Add(state);
     }
 
+    /// <summary>
+    /// Загрузка состояния чанка
+    /// </summary>
+    /// <param name="state">Состояние чанка</param>
     private void LoadState(ChunkState state)
     {
         SetActiveChild(state.DecorStates, DecorContainer);

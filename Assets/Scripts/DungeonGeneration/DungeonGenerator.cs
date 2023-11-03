@@ -67,11 +67,13 @@ public class DungeonGenerator : MonoBehaviour
         ClearDungeon();
         InstantiateChunks();
         UpdateChunks(UnusedChunks.FirstOrDefault());
-        //GenerateDungeon();
         SetChunks();
         SetPlayerPosition();
     }
 
+    /// <summary>
+    /// Метод создания начального пула чанков
+    /// </summary>
     private void InstantiateChunks()
     {
         for (int i = 0; i < BaseMapSize * BaseMapSize; i++)
@@ -82,6 +84,9 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Метод для очищения и удаления элементов списков установленных и неиспользуемых чанков
+    /// </summary>
     [ContextMenu("Clear")]
     private void ClearDungeon()
     {
@@ -89,6 +94,10 @@ public class DungeonGenerator : MonoBehaviour
         ClearChunks(UnusedChunks);
     }
 
+    /// <summary>
+    /// Метод для очищения и удаления элементов списка чанков
+    /// </summary>
+    /// <param name="chunks">Список чанков</param>
     private void ClearChunks(List<ChunkScript> chunks)
     {
         if (chunks.Count > 0)
@@ -105,23 +114,11 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    //private void GenerateDungeon()
-    //{
-    //    for (int y = 0; y < BaseMapSize; y++)
-    //    {
-    //        for (int x = 0; x < BaseMapSize; x++)
-    //        {
-    //            float noise = Mathf.PerlinNoise(x + xOffset + noiseFixer, y + yOffset + noiseFixer);
-    //            var chunk = UnusedChunks.FirstOrDefault();
 
-    //            if (noise >= ChunkPlacementValue && chunk != null)
-    //            {
-    //                PlaceChunk(x, y, chunk);
-    //            }
-    //        }
-    //    }
-    //}
-
+    /// <summary>
+    /// Метод обновления чанков
+    /// </summary>
+    /// <param name="chunk">Центральный чанк, вокруг которого происходит обновление</param>
     private void UpdateChunks(ChunkScript chunk)
     {
         var list = new List<ChunkScript>();
@@ -161,6 +158,12 @@ public class DungeonGenerator : MonoBehaviour
         SetChunks();
     }
 
+    /// <summary>
+    /// Метод установки чанка
+    /// </summary>
+    /// <param name="x">Положение по X оси</param>
+    /// <param name="y">Положение по Y оси</param>
+    /// <param name="chunk">Чанк из пула</param>
     private void PlaceChunk(int x, int y, ChunkScript chunk)
     {
         chunk.gameObject.SetActive(true);
@@ -185,6 +188,11 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Метод поиска соседних чанков
+    /// </summary>
+    /// <param name="coordinates"></param>
+    /// <returns>Массив булевых значений, обозначающих наличие или отсутствие соседа</returns>
     private bool[] GetNeighbors(Vector2Int coordinates)
     {
         List<bool> neighbors = new List<bool>();
@@ -214,6 +222,9 @@ public class DungeonGenerator : MonoBehaviour
         return neighbors.ToArray();
     }
 
+    /// <summary>
+    /// Установка позиции игрока после генерации
+    /// </summary>
     private void SetPlayerPosition()
     {
         Player.transform.position = PlacedChunks[0].transform.position;
